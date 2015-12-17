@@ -22,7 +22,7 @@ app.get('/todos', function (req, res) {
 app.get('/todos/:id', function (req, res) {
 	var todoId = parseInt(req.params.id, 10);
 
-	var matched = _.findWhere(todos, {id: todoId})
+	var matched = _.findWhere(todos, {id: todoId});
 	// var matched;
 
 	// todos.forEach(function (todo) {
@@ -53,6 +53,20 @@ app.post('/todos', function (req, res) {
 	
 	console.log('description: ' + body.description);
 	res.json(body);
+});
+
+// DELETE /todos/id 
+app.delete('/todos/:id', function (req, res) {
+	var todoId = parseInt(req.params.id, 10);
+
+	var matched = _.findWhere(todos, {id: todoId});
+
+	if (matched) { 
+		todos = _.without(todos, matched);
+		res.json(matched);
+	} else {
+		res.status(404).json({"error" : "ID not found"});
+	}
 });
 
 app.listen(PORT, function(){
